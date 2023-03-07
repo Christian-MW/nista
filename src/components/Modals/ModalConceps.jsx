@@ -2,18 +2,24 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
+import { ConceptService } from '../../services/ConceptService';
 
 export default function ModalConcepts() {
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const conceptServices = new ConceptService();
 
     function saveConcept() {
         const nameNewCon = document.getElementById('nameNConcept').value;
+        conceptServices.addConcept(nameNewCon).then(data => {
+            conceptServices.getConcepts();
+            handleClose();
+
+        });
+        console.log();
         
-        
-        axios.post('http://3.138.108.174:9091/apolo/api/topic/add', {
+        /*axios.post('http://3.138.108.174:9091/apolo/api/topic/add', {
             headers: {
                 'Access-Control-Allow-Origin' : '*',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
@@ -31,7 +37,7 @@ export default function ModalConcepts() {
                 console.log("ERROR AL AGREGAR UN CONCEPTO");
                 console.log(JSON.stringify(error));
                 alert(JSON.stringify(error))
-            });
+            });*/
     }
 
     return (

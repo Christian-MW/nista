@@ -1,6 +1,9 @@
+import Search from "./components/Search/Search";
 const http = require("http"); 
 //create a server object: 
 http.createServer(function (req, res) { 
+
+
     res.write("<h1>Hello World!</h1>");
     res.end();
 }) .listen(3000);

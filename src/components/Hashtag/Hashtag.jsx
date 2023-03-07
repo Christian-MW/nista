@@ -6,29 +6,31 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ModalConcepts from '../Modals/ModalConceps';
-
+import { ConceptService } from '../../services/ConceptService';
+import HashtagSelect from './HashtagSelect';
 
 class Hashtag extends React.Component {
-    state = {
-        objConcepts: [],
-        objConceptsOr: [],
-        textBuscar: "",
-        text: ""
+
+    constructor(){
+        super();
+        this.state = {
+            objConcepts: [],
+            objConceptsOr: [],
+            textBuscar: "",
+            text: ""
+        };
+        this.conceptService =  new ConceptService();
     }
 
 
     componentDidMount() {
-        axios.get("https://jsonplaceholder.typicode.com/todos")
-            .then((response) => {
-                this.setState({ objConcepts: response.data })
-                this.setState({ objConceptsOr: response.data })
-            })
-            .catch((error) => {
-                console.log("ERROR SERVICE HASHTAGS: ")
-                console.log(error);
-            });
-
-        axios.get("http://3.138.108.174:9091/apolo/api/topic/get",{
+        this.conceptService.getConcepts().then(data => {
+            console.log(data)
+            this.setState({ objConcepts: data.result });
+            this.setState({ objConceptsOr: data.result });
+        });
+        console.log();  
+        /*axios.get("http://3.138.108.174:9091/apolo/api/topic/get",{
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'origin':'x-requested-with',
@@ -37,12 +39,14 @@ class Hashtag extends React.Component {
               },
         })
             .then((response) => {
-                console.log(JSON.stringify(response.data))
+                console.log(JSON.stringify(response.data.result))
+                this.setState({ objConcepts: response.data.result })
+                this.setState({ objConceptsOr: response.data.result })
             })
             .catch((error) => {
                 console.log("ERROR SERVICE GET_TOPICS: ")
                 console.log(error);
-            });
+            });*/
     }
 
     filter(ev) {
@@ -51,7 +55,7 @@ class Hashtag extends React.Component {
         var text = ev.target.value
         const data = this.state.objConceptsOr;
         const newData = data.filter(function (item) {
-            const itemData = item.title.toUpperCase()
+            const itemData = item.description.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1
         })
@@ -59,7 +63,6 @@ class Hashtag extends React.Component {
             objConcepts: newData,
             text: text,
         })
-        console.log("");
     }
 
     render() {
@@ -70,7 +73,7 @@ class Hashtag extends React.Component {
                     <div class="row">
                         <main role="main" className="flex-shrink-0 mt-5">
                             <h2>HASHTAG</h2>
-
+<HashtagSelect />
                             <div class="container d-flex flex-wrap justify-content-center">
                                 <form class="col-9 mb-2 mb-lg-0 me-lg-auto" role="search">
                                     <input id="nameHashtag" type="search" class="form-control" placeholder='Agregar' aria-label="Search" />
@@ -89,8 +92,8 @@ class Hashtag extends React.Component {
                                     <input class="form-control" onChange={(text) => this.filter(text)} />
                                     <ul class="list-group">
                                         {this.state.objConcepts.map((x, i) => <li key={i} class="list-group-item">
-                                            <input id={x.id} class="form-check-input me-1" name="lang" type="checkbox" value={x.title} aria-label="..." />
-                                            <label>{x.title}</label>
+                                            <input id={x.id} class="form-check-input me-1" name="lang" type="checkbox" value={x.description} aria-label="..." />
+                                            <label>{x.description}</label>
                                         </li>)}
                                     </ul>
                                 </div>
