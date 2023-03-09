@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ConceptService } from '../../services/ConceptService';
 import { HashtagService } from '../../services/HashtagService';
+import Hashtag from './Hashtag';
 
 class HashtagSelect extends React.Component {
 
@@ -11,13 +12,17 @@ class HashtagSelect extends React.Component {
             objConcepts: []
         };
         this.hashtagService = new HashtagService();
-        this.conceptService =  new ConceptService();
+        this.conceptService = new ConceptService();
+        this.hashtag = new Hashtag();
     }
 
     componentDidMount() {
         this.hashtagService.getHashtags().then(data => {
             console.log(data)
             this.setState({ objHashtags: data });
+            if (data.length > 0) {
+                this.hashtag.printConcepts(data.at(0).id, data.at(0));
+            }
         });
         this.conceptService.getConcepts().then(data => {
             console.log(data)
@@ -25,7 +30,15 @@ class HashtagSelect extends React.Component {
         });
     }
 
-    printConcepts(element) {
+    printConcepts(IDhash) {
+        //window.location.reload(true);
+        this.state.objHashtags.forEach((item) => {
+            console.log(item)
+            if (item.id == IDhash) {
+                this.hashtag.printConcepts(IDhash, item);
+            }
+        })
+
         //alert(JSON.stringify(element))
     }
 

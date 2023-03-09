@@ -6,10 +6,10 @@ class menu extends React.Component {
 
         return(
 
-            <nav id="navMain" className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <nav id="navMain" className="navbar navbar-expand-md fixed-top">
 				<div>
 					<img id ="logoMW-H" src="https://mwgroup.agency/wp-content/uploads/2022/07/Logotipo-2-1024x1024.png"/> 
-		    		<a className="navbar-brand" href="/Search">Campañas</a>
+		    		{/*<a className="navbar-brand tittle-h" href="/Search">Campañas</a>*/}
 				</div>
 		    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 		     	<span className="navbar-toggler-icon"></span>

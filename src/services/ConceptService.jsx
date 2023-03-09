@@ -1,24 +1,29 @@
 import axios from "axios";
 import React, { Component } from 'react';
 
+require('dotenv').config();
 export class ConceptService extends React.Component {
-    baseURL = "http://3.138.108.174:9091/apolo/api/topic/";
+    
+    baseURL = process.env.REACT_APP_BASE_URL;
+    email = process.env.REACT_APP_EMAIL;
 
-
-    getConcepts() {
-        return axios.get(this.baseURL + "get")
+    async getConcepts() {
+        console.log(this.email);
+        console.log(this.baseURL);
+        return await axios.get(this.baseURL + "topic/get")
             .then(res => res.data)
     }
 
 
 
     async addConcept(nameNewCon) {
-        await axios.post('http://3.138.108.174:9091/apolo/api/topic/add', {
+        console.log("####__addConcept___####")
+        await axios.post(this.baseURL +'topic/add', {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
             },
-            email: "christian.garcia@mwgroup.com.mx",
+            email: this.email,
             id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             description: nameNewCon,
             status: true
@@ -31,6 +36,55 @@ export class ConceptService extends React.Component {
             })
             .catch(function (error) {
                 console.log("ERROR AL AGREGAR UN CONCEPTO");
+                console.log(JSON.stringify(error));
+                //alert(JSON.stringify(error))
+            });
+    }
+
+    async addConceptToHashtag(hashtagId, topicId){
+        console.log("####__addConceptToHashtag___####")
+        await axios.post(this.baseURL +'hashtag/add/topic', {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            },
+            email: this.email,
+            hashtagId: hashtagId,
+            topicId: topicId
+        })
+            .then(function (response) {
+                console.log("SERVICE POST /hashtag/add/topic: " + JSON.stringify(response.data));
+                //alert("AGREGADO EXITOSAMENTE")
+                //this.getConcepts();
+                return response;
+            })
+            .catch(function (error) {
+                console.log("ERROR AL RELACIONAR UN CONCEPTO");
+                console.log(JSON.stringify(error));
+                //alert(JSON.stringify(error))
+            });
+    }
+
+
+    async deleteConceptToHashtag(hashtagId, topicId){
+        console.log("####__deleteConceptToHashtag___####")
+        await axios.post(this.baseURL +'hashtag/remove/topic', {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            },
+            email: this.email,
+            hashtagId: hashtagId,
+            topicId: topicId
+        })
+            .then(function (response) {
+                console.log("SERVICE POST /hashtag/remove/topic: " + JSON.stringify(response.data));
+                //alert("AGREGADO EXITOSAMENTE")
+                //this.getConcepts();
+                return response;
+            })
+            .catch(function (error) {
+                console.log("ERROR AL RELACIONAR UN CONCEPTO");
                 console.log(JSON.stringify(error));
                 //alert(JSON.stringify(error))
             });

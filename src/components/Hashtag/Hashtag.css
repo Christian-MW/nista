@@ -1,3 +1,13 @@
 .divCon{
     margin-top: 5% !important;
 }
+
+#rowMain{
+    height: 700px;
+}
+#divMain{
+    height: 90%;
+}
+#cont-btns-hash{
+    padding-top: 20px;
+}

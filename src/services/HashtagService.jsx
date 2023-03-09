@@ -1,28 +1,57 @@
 import axios from "axios";
 import React, { Component } from 'react';
 
+require('dotenv').config();
 export class HashtagService extends React.Component {
-    baseURL = "http://3.138.108.174:9091/apolo/api/hashtag/";
+    
+    baseURL = process.env.REACT_APP_BASE_URL;
+    email = process.env.REACT_APP_EMAIL;
 
     getHashtags() {
-        return axios.get(this.baseURL + "get")
+        return axios.get(this.baseURL + "hashtag/get")
             .then(res => res.data.result)
     }
 
 
-    /*async getHashtags(){
-        await axios.get(this.baseURL + 'get')
-            .then((response) => {
-                console.log('====###__OBTENIENDO LOS HASHTAGS: ')
-                console.log(response.data);
-                return response.data;
-                //this.setState({ objHashtags: response.data.data })
+    async addHashtag(conceptsToAdd, nameNewCon){
+        console.log("####__addHashtag___####")
+        var conceptsALL=[];
+
+        conceptsToAdd.forEach((itemCon)=>{
+            var conceptItem={
+                email: this.email,
+                id:"",
+                description:"",
+                status:true
+            }
+            conceptItem.id= itemCon;
+            conceptsALL.push(conceptItem);
+        })
+        console.log();
+
+        await axios.post(this.baseURL +'hashtag/add', {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            },
+            email: this.email,
+            id:"3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            hashtag: nameNewCon,
+            status: true,
+            topics: conceptsALL
+        })
+            .then(function (response) {
+                console.log("SERVICE POST /hashtag/add: " + JSON.stringify(response.data));
+                //alert("AGREGADO EXITOSAMENTE")
+                //this.getConcepts();
+                return response;
             })
-            .catch((error) => {
-                console.log("ERROR SERVICE HASHTAGS: ")
-                console.log(error);
+            .catch(function (error) {
+                console.log("ERROR AL RELACIONAR UN CONCEPTO");
+                console.log(JSON.stringify(error));
+                //alert(JSON.stringify(error))
             });
-        }*/
+    }
 
 
 

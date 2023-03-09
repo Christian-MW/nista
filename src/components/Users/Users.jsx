@@ -38,10 +38,10 @@ class Users extends React.Component {
             <>
                 <Menu />
                 <div class="container">
-                    <div class="row">
+                    <div id="rowMain" class="row">
                         <main role="main" className="flex-shrink-0 mt-5">
                             <h2>USERS</h2>
-                            <div class="px-3 py-2 border-bottom mb-3">
+                            <div id="divMain" class="px-3 py-2 border-bottom mb-3">
                                 <div class="container d-flex flex-wrap justify-content-center">
                                     <select name="hashtags" id="selectHash" class="form-select form-select-lg mb-1">
                                         {this.state.objHashtags.map(element => (
