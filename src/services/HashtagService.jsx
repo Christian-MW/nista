@@ -12,6 +12,19 @@ export class HashtagService extends React.Component {
             .then(res => res.data.result)
     }
 
+    async getHashtagByID(hashtagID){
+        console.log("############___getHashtagByID__");
+        await axios.get(this.baseURL + "hashtag/" + hashtagID )
+        .then(function (response) {
+            console.log(response.data);
+            return response.data.result;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    }
+
 
     async addHashtag(conceptsToAdd, nameNewCon){
         console.log("####__addHashtag___####")

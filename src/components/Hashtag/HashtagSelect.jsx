@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { ConceptService } from '../../services/ConceptService';
 import { HashtagService } from '../../services/HashtagService';
 import Hashtag from './Hashtag';
 
+require('dotenv').config();
 class HashtagSelect extends React.Component {
 
+    baseURL = process.env.REACT_APP_BASE_URL;
     constructor() {
         super();
         this.state = {
@@ -32,12 +35,40 @@ class HashtagSelect extends React.Component {
 
     printConcepts(IDhash) {
         //window.location.reload(true);
-        this.state.objHashtags.forEach((item) => {
+        document.getElementById('divIDHash').innerHTML = IDhash;
+        this.hashtag.clearConceptsHashtag();
+        setTimeout(() => {
+            axios.get(this.baseURL + "hashtag/" + IDhash )
+            .then(function (response) {
+    
+                console.log("CONCEPTS TO HASHTAG: " + JSON.stringify(response.data.result.topics.length));
+                if (response.data.result.topics.length > 0) {
+                    response.data.result.topics.forEach((item) => {
+                        console.log(item)
+                        document.getElementById(item.id).checked = true;
+                        
+                    });
+                }
+                console.log("");
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+          }, "500");
+
+
+
+
+        /*this.hashtagService.getHashtagByID(IDhash).then(data => {
+            console.log(data);
+        });*/
+
+        /*this.state.objHashtags.forEach((item) => {
             console.log(item)
             if (item.id == IDhash) {
                 this.hashtag.printConcepts(IDhash, item);
             }
-        })
+        })*/
 
         //alert(JSON.stringify(element))
     }

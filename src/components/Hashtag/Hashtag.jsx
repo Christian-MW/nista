@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import ModalConcepts from '../Modals/ModalConceps';
 import ModalHashtag from '../Modals/ModalHashtag';
 import { ConceptService } from '../../services/ConceptService';
+import { HashtagService } from '../../services/HashtagService';
 import HashtagSelect from './HashtagSelect';
 
 class Hashtag extends React.Component {
@@ -22,6 +23,7 @@ class Hashtag extends React.Component {
             idHashtag: ""
         };
         this.conceptService = new ConceptService();
+        this.hashtagService = new HashtagService();
     }
 
 
@@ -69,9 +71,22 @@ class Hashtag extends React.Component {
     }
 
     clearConcepts(data) {
+        /*this.conceptService.getConcepts().then(data => {
+            data.result.forEach((itemCon) => {
+                document.getElementById(itemCon.id).checked = false;
+            })
+        });*/
+
         data.forEach((itemCon) => {
             document.getElementById(itemCon.id).checked = false;
         })
+    }
+    clearConceptsHashtag() {
+        this.conceptService.getConcepts().then(data => {
+            data.result.forEach((itemCon) => {
+                document.getElementById(itemCon.id).checked = false;
+            })
+        });
     }
 
     changeConcept(ev) {
@@ -79,7 +94,7 @@ class Hashtag extends React.Component {
         var hashID = document.getElementById('divIDHash').innerText;
         if (checkBox.checked == true) {
             //alert("Activar")
-            this.addConceptToHashtag(hashID, ev.target.id)
+            this.addConceptToHashtag(hashID, ev.target.id);
         } else {
             //alert("DESActivar")
             this.deleteConceptToHashtag(hashID, ev.target.id);
