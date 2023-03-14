@@ -32,9 +32,16 @@ export class ConceptService extends React.Component {
                 console.log("SERVICE POST /api/topic/add: " + JSON.stringify(response.data));
                 //alert("AGREGADO EXITOSAMENTE")
                 //this.getConcepts();
+                window.location.reload(true);
                 return response;
             })
             .catch(function (error) {
+                if(error.response.status == 409){
+
+
+                    document.getElementById("alertCN").style.display = "block";
+                    
+                }
                 console.log("ERROR AL AGREGAR UN CONCEPTO");
                 console.log(JSON.stringify(error));
                 //alert(JSON.stringify(error))

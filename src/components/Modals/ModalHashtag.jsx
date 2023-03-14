@@ -30,7 +30,7 @@ export default function ModalHashtag() {
         hashtagService.addHashtag(conceptsToAdd, nameNewCon).then(data => {
             //conceptServices.getConcepts();
             //handleClose();
-            window.location.reload(true);
+            //window.location.reload(true);
         });
         console.log();
     }

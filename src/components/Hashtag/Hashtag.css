@@ -6,8 +6,15 @@
     height: 700px;
 }
 #divMain{
-    height: 90%;
+    height: 80% !important;
 }
 #cont-btns-hash{
     padding-top: 20px;
+}
+
+#alertEx{
+    z-index: 9999
+}
+#alertCN{
+    z-index: 9999
 }

@@ -41,7 +41,7 @@ class Search extends React.Component{
                 <div id="rowMain" class="row">
                 <main role="main" className="flex-shrink-0 mt-5">
                     <h2>SEARCH</h2>
-                    <div id="divMain" class="px-3 py-2 border-bottom mb-3">
+                    <div id="divMain" class="px-3 py-2 overflow-auto border-bottom mb-3">
                     <div class="container d-flex flex-wrap justify-content-center">
                         <form class="col-9 mb-2 mb-lg-0 me-lg-auto" role="search">
                             <input type="search" class="form-control" placeholder="Busqueda..." aria-label="Search" />

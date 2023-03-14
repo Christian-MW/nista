@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from 'react';
+import Alert from 'react-bootstrap/Alert';
 
 require('dotenv').config();
 export class HashtagService extends React.Component {
@@ -57,9 +58,16 @@ export class HashtagService extends React.Component {
                 console.log("SERVICE POST /hashtag/add: " + JSON.stringify(response.data));
                 //alert("AGREGADO EXITOSAMENTE")
                 //this.getConcepts();
+                window.location.reload(true);
                 return response;
             })
             .catch(function (error) {
+                if(error.response.status == 409){
+
+
+                    document.getElementById("alertEx").style.display = "block";
+                    
+                }
                 console.log("ERROR AL RELACIONAR UN CONCEPTO");
                 console.log(JSON.stringify(error));
                 //alert(JSON.stringify(error))

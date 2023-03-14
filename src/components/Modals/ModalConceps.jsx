@@ -15,7 +15,7 @@ export default function ModalConcepts() {
         conceptServices.addConcept(nameNewCon).then(data => {
             conceptServices.getConcepts();
             //handleClose();
-            window.location.reload(true);
+            //window.location.reload(true);
         });
         console.log();
     }

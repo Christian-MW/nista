@@ -117,6 +117,12 @@ class Hashtag extends React.Component {
             text: text,
         })
     }
+    closeAlert(){
+        document.getElementById("alertEx").style.display = "none";
+    }
+    closeConcept(){
+        document.getElementById("alertCN").style.display = "none";
+    }
 
     render() {
         return (
@@ -126,8 +132,16 @@ class Hashtag extends React.Component {
                     <div id="rowMain" class="row">
                         <main role="main" className="flex-shrink-0 mt-5">
                             <h2>HASHTAG</h2><div style={{ display: "none" }} id="divIDHash"></div>
-                            <div id="divMain" class="px-3 py-2 border-bottom mb-3">
+                            <div id="divMain" class="px-3 py-2 overflow-auto border-bottom mb-3">
                                 <HashtagSelect />
+                                <div id="alertEx" style={{ display: "none" }} class="alert alert-danger alert-dismissible">
+                                        <strong>Error!</strong> Ya existe un Hashtag con ese nombre.
+                                        <button onClick={this.closeAlert} type="button" class="btn-close" aria-label="Close"></button>
+                                </div>
+                                <div id="alertCN" style={{ display: "none" }} class="alert alert-danger alert-dismissible">
+                                        <strong>Error!</strong> Ya existe un Concepto con ese nombre.
+                                        <button onClick={this.closeConcept} type="button" class="btn-close" aria-label="Close"></button>
+                                </div>
                                 <div id="cont-btns-hash" class="container d-flex flex-wrap justify-content-center">
                                     <div class="col-8">
                                         {/*<form class="col-9 mb-2 mb-lg-0 me-lg-auto" role="search">
@@ -140,7 +154,6 @@ class Hashtag extends React.Component {
                                     <div class="col-2">
                                     <ModalConcepts />
                                     </div>
-
                                     {/*<div class="text-end">
                                         <button id="hashtagBTN" type="button" class="btn btn-light text-dark me-2">Crear Hashtag</button>
                                     </div>*/}
