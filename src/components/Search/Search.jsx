@@ -38,7 +38,7 @@ class Search extends React.Component{
             <>
 			<Menu /> 
             <div class="container">
-                <div id="rowMain" class="row">
+                <div id="rowMainS" class="row">
                 <main role="main" className="flex-shrink-0 mt-5">
                     <h2>SEARCH</h2>
                     <div id="divMain" class="px-3 py-2 overflow-auto border-bottom mb-3">

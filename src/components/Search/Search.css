@@ -1,6 +1,6 @@
 
-#rowMain{
-    height: 700px;
+#rowMainS{
+    height: 700px !important;
 }
 #divMain{
     height: 80%;

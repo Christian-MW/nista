@@ -3,10 +3,10 @@
 }
 
 #rowMain{
-    height: 700px;
+    height: 95% !important;
 }
 #divMain{
-    height: 80% !important;
+    height: 90% !important;
 }
 #cont-btns-hash{
     padding-top: 20px;
