@@ -8,8 +8,8 @@ export class ConceptService extends React.Component {
     email = process.env.REACT_APP_EMAIL;
 
     async getConcepts() {
-        console.log(this.email);
-        console.log(this.baseURL);
+        //console.log(this.email);
+        //console.log(this.baseURL);
         return await axios.get(this.baseURL + "topic/get")
             .then(res => res.data)
     }
@@ -17,7 +17,7 @@ export class ConceptService extends React.Component {
 
 
     async addConcept(nameNewCon) {
-        console.log("####__addConcept___####")
+        //console.log("####__addConcept___####")
         await axios.post(this.baseURL +'topic/add', {
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -29,7 +29,7 @@ export class ConceptService extends React.Component {
             status: true
         })
             .then(function (response) {
-                console.log("SERVICE POST /api/topic/add: " + JSON.stringify(response.data));
+                //console.log("SERVICE POST /api/topic/add: " + JSON.stringify(response.data));
                 //alert("AGREGADO EXITOSAMENTE")
                 //this.getConcepts();
                 window.location.reload(true);
