@@ -186,8 +186,10 @@ class Search extends React.Component {
                     <Select
                       closeMenuOnSelect={false}
                       components={animatedComponents}
+                      placeholder={'Ingresa uno o varios elementos (hashtags, conceptos)...'}
                       isMulti
                       options={itemsALL}
+                      noOptionsMessage={() => 'Elemento no encotrado'}
                       onChange={e => this.sendSearch(e)}
                     />
                   </form>
@@ -208,7 +210,7 @@ class Search extends React.Component {
                                 </div>
                 <div id="tittleSearch">
                   <br></br><br></br>
-                  <h4>La búsqueda: {searchName} contiene resultados <span id="nSer">{lengSearch}</span></h4>
+                  <h4>La búsqueda: {searchName} contiene <span id="nSer">{lengSearch}</span> resultados</h4>
                 </div>
               </div>
             </main>
