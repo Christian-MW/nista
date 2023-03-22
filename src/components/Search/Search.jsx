@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 import Menu from '../menu/menu';
 import Footer from '../footer/footer';
 import './Search.css';
@@ -11,16 +12,19 @@ import makeAnimated from 'react-select/animated';
 
 
 const headers = [
-  { label: "Name", key: "name" },
-  { label: "Username", key: "username" },
-  { label: "Email", key: "email" },
-  { label: "Phone", key: "phone" },
-  { label: "Website", key: "website" }
+  { label: "Cuenta", key: "cuenta" },
+  { label: "Seguidores", key: "seguidores" },
+  { label: "Red Social", key: "red_social" },
+  { label: "Link", key: "link" }
 ];
 var itemsALL = [];
 var itemsSearch = [];
+var ArrayUsers = [];
 var concServ = 0;
 var hashServ = 0;
+var searchName = "";
+var lengSearch = 0;
+
 const animatedComponents = makeAnimated();
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -28,13 +32,18 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' }
 ]
 
+require('dotenv').config();
 class Search extends React.Component {
+  baseURL = process.env.REACT_APP_BASE_URL;
+  email = process.env.REACT_APP_EMAIL;
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       objConcepts: [],
-      allItems: []
+      allItems: [],
+      nameSearch: "",
+      numSearch: "",
     }
     this.csvLinkEl = React.createRef();
     this.searchService = new SearchService();
@@ -62,7 +71,7 @@ class Search extends React.Component {
             id: itemCon.id,
             text: itemCon.description,
             type: "topic",
-            value:itemCon.id,
+            value: itemCon.id,
             label: itemCon.description
           }
           itemsALL.push(concepttem);
@@ -77,7 +86,7 @@ class Search extends React.Component {
             id: itemHash.id,
             text: itemHash.hashtag,
             type: "hashtag",
-            value:itemHash.id,
+            value: itemHash.id,
             label: itemHash.hashtag
           }
           itemsALL.push(hashtagtem);
@@ -90,19 +99,75 @@ class Search extends React.Component {
     }
   }
 
-  sendSearch(e){
+  sendSearch(e) {
     console.log("###__SEND_DATA");
     //console.log(e);
     itemsSearch = e;
+    if (e.length == 0) {
+      document.getElementById("downBTN").style.display = "none";
+      document.getElementById("tittleSearch").style.display = "none";
+    }
   }
 
   searches = async () => {
-    console.log(itemsSearch, "or");
-    this.searchService = new SearchService();
-    this.searchService.searchUsers(itemsSearch, "or").then(data => {
+    /*this.searchService = new SearchService();
+    await this.searchService.searchUsers(itemsSearch, "or").then(data => {
       console.log(data);
-    });    
+    });  */
+    if (itemsSearch.length > 0) {
+      searchName = "";
+      itemsSearch.forEach((item) => {
+        searchName += item.label + ", ";
+      })
+      searchName = searchName.slice(0, -2);
+      this.setState({ nameSearch: searchName });
+      console.log();
+      setTimeout(() => {
+      axios.post(this.baseURL + 'search/simple', {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        },
+        email: this.email,
+        type: "or",
+        filters: itemsSearch
+      })
+        .then(function (response) {
+          console.log("SERVICE POST /search/simple: " + JSON.stringify(response.data));
+          if (response.data.result.length > 0) {
+            ArrayUsers = [];
+            response.data.result.forEach((userDB) => {
+              var userJSON = {
+                cuenta: userDB.screanName,
+                seguidores: userDB.followers,
+                red_social: userDB.socialNetwork,
+                link: userDB.link
+              }
+              ArrayUsers.push(userJSON);
+            });
+            lengSearch = response.data.result.length;
+            document.getElementById('nSer').innerHTML = response.data.result.length;
+            document.getElementById("downBTN").style.display = "block";
+            document.getElementById("tittleSearch").style.display = "block";
+            console.log();
+          }
+          else{
+            document.getElementById('nSer').innerHTML = response.data.result.length;
+            document.getElementById("tittleSearch").style.display = "block";
+          }
+        })
+        .catch(function (error) {
+          console.log("ERROR AL BUSCAR USUARIOS");
+          console.log(JSON.stringify(error));
+        });
+      }, "500");
+      
+    }
+    else {
+      alert("La búsqueda debe contener al menos un elemento")
+    }
   }
+
 
   render() {
     return (
@@ -117,27 +182,29 @@ class Search extends React.Component {
                   <form class="col-9 mb-2 mb-lg-0 me-lg-auto" role="search">
                     {/*<input id="tags" type="search" class="form-control" placeholder="Busqueda..." aria-label="Search" />*/}
                     <Select
-      closeMenuOnSelect={false}
-      components={animatedComponents}
-      isMulti
-      options={itemsALL}
-      onChange={e => this.sendSearch(e)}
-    />
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      isMulti
+                      options={itemsALL}
+                      onChange={e => this.sendSearch(e)}
+                    />
                   </form>
                   <div class="text-end">
                     <button onClick={this.searches} id="searchBTN" type="button" class="btn btn-light text-dark me-2">Buscar</button>
                   </div>
-
-                  <input type="button" value="Descargar CSV" onClick={this.downloadReport} />
+                  <button onClick={this.downloadReport} id="downBTN" type="button" class="btn btn-light text-dark me-2">Descargar CSV</button>
                   <CSVLink
                     headers={headers}
                     filename="Usuarios.csv"
-                    data={[]}
+                    data={ArrayUsers}
                     ref={this.csvLinkEl}
                   />
                 </div>
+                <div id="tittleSearch">
+                  <br></br><br></br>
+                  <h4>La búsqueda: {searchName} contiene resultados <span id="nSer">{lengSearch}</span></h4>
+                </div>
               </div>
-
             </main>
           </div>
         </div>

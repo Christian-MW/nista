@@ -23,7 +23,7 @@ export class SearchService extends React.Component {
             .then(function (response) {
                 console.log("SERVICE POST /hashtag/add: " + JSON.stringify(response.data));
                 //window.location.reload(true);
-                return response;
+                return response.data.result;
             })
             .catch(function (error) {
                 console.log("ERROR AL RELACIONAR UN CONCEPTO");

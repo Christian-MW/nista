@@ -5,3 +5,10 @@
 #divMain{
     height: 80%;
 }
+
+#downBTN{
+    display: none;
+}
+#tittleSearch{
+    display: none; 
+}

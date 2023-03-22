@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './LogoMW.svg';
 import { useEffect, useState } from 'react';
 import React from 'react'
 import jwt_decode from "jwt-decode";
