@@ -164,10 +164,12 @@ class Search extends React.Component {
       
     }
     else {
-      alert("La búsqueda debe contener al menos un elemento")
+      document.getElementById("alertSer").style.display = "block";
     }
   }
-
+  closeAlSer(){
+    document.getElementById("alertSer").style.display = "none";
+}
 
   render() {
     return (
@@ -200,6 +202,10 @@ class Search extends React.Component {
                     ref={this.csvLinkEl}
                   />
                 </div>
+                <div id="alertSer" style={{ display: "none" }} class="alert alert-danger alert-dismissible">
+                                        <strong>Error!</strong> La búsqueda debe contener al menos un elemento.
+                                        <button onClick={this.closeAlSer} type="button" class="btn-close" aria-label="Close"></button>
+                                </div>
                 <div id="tittleSearch">
                   <br></br><br></br>
                   <h4>La búsqueda: {searchName} contiene resultados <span id="nSer">{lengSearch}</span></h4>
