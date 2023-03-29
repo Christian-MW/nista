@@ -14,21 +14,21 @@ export class HashtagService extends React.Component {
     }
 
     async getHashtagByID(hashtagID) {
-        console.log("############___getHashtagByID__");
+        //console.log("############___getHashtagByID__");
         await axios.get(this.baseURL + "hashtag/" + hashtagID)
             .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 return response.data.result;
             })
             .catch(function (error) {
-                console.log(error);
+                //console.log(error);
             });
 
     }
 
 
     async addHashtag(conceptsToAdd, nameNewCon) {
-        console.log("####__addHashtag___####")
+        //console.log("####__addHashtag___####")
         var conceptsALL = [];
 
         conceptsToAdd.forEach((itemCon) => {
@@ -41,7 +41,6 @@ export class HashtagService extends React.Component {
             conceptItem.id = itemCon;
             conceptsALL.push(conceptItem);
         })
-        console.log();
 
         await axios.post(this.baseURL + 'hashtag/add', {
             headers: {

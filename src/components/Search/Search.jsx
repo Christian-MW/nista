@@ -26,11 +26,6 @@ var searchName = "";
 var lengSearch = 0;
 
 const animatedComponents = makeAnimated();
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
 
 require('dotenv').config();
 class Search extends React.Component {
@@ -119,57 +114,60 @@ class Search extends React.Component {
       itemsSearch.forEach((item) => {
         searchName += item.label + ", ";
       })
+      document.getElementById("loader").style.display = "block";
       searchName = searchName.slice(0, -2);
       this.setState({ nameSearch: searchName });
       console.log();
       setTimeout(() => {
-      axios.post(this.baseURL + 'search/simple', {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-        },
-        email: this.email,
-        type: "or",
-        filters: itemsSearch
-      })
-        .then(function (response) {
-          console.log("SERVICE POST /search/simple: " + JSON.stringify(response.data));
-          if (response.data.result.length > 0) {
-            ArrayUsers = [];
-            response.data.result.forEach((userDB) => {
-              var userJSON = {
-                cuenta: userDB.screanName,
-                seguidores: userDB.followers,
-                red_social: userDB.socialNetwork,
-                link: userDB.link
-              }
-              ArrayUsers.push(userJSON);
-            });
-            lengSearch = response.data.result.length;
-            document.getElementById('nSer').innerHTML = response.data.result.length;
-            document.getElementById("downBTN").style.display = "block";
-            document.getElementById("tittleSearch").style.display = "block";
-            console.log();
-          }
-          else{
-            document.getElementById('nSer').innerHTML = response.data.result.length;
-            document.getElementById("tittleSearch").style.display = "block";
-          }
+        axios.post(this.baseURL + 'search/simple', {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+          },
+          email: this.email,
+          type: "or",
+          filters: itemsSearch
         })
-        .catch(function (error) {
-          console.log("ERROR AL BUSCAR USUARIOS");
-          console.log(JSON.stringify(error));
-        });
+          .then(function (response) {
+            console.log("SERVICE POST /search/simple: " + JSON.stringify(response.data));
+            document.getElementById("loader").style.display = "none";
+            if (response.data.result.length > 0) {
+              ArrayUsers = [];
+              response.data.result.forEach((userDB) => {
+                var userJSON = {
+                  cuenta: userDB.screanName,
+                  seguidores: userDB.followers,
+                  red_social: userDB.socialNetwork,
+                  link: userDB.link
+                }
+                ArrayUsers.push(userJSON);
+              });
+              lengSearch = response.data.result.length;
+              document.getElementById('nSer').innerHTML = response.data.result.length;
+              document.getElementById("downBTN").style.display = "block";
+              document.getElementById("tittleSearch").style.display = "block";
+              console.log();
+            }
+            else {
+              document.getElementById('nSer').innerHTML = response.data.result.length;
+              document.getElementById("tittleSearch").style.display = "block";
+            }
+          })
+          .catch(function (error) {
+            document.getElementById("loader").style.display = "none";
+            console.log("ERROR AL BUSCAR USUARIOS");
+            console.log(JSON.stringify(error));
+          });
       }, "500");
-      
+
     }
     else {
       document.getElementById("alertSer").style.display = "block";
     }
   }
-  closeAlSer(){
+  closeAlSer() {
     document.getElementById("alertSer").style.display = "none";
-}
+  }
 
   render() {
     return (
@@ -193,10 +191,14 @@ class Search extends React.Component {
                       onChange={e => this.sendSearch(e)}
                     />
                   </form>
-                  <div class="text-end">
-                    <button onClick={this.searches} id="searchBTN" type="button" class="btn btn-light text-dark me-2">Buscar</button>
+                  <div class="col-1">
+                    <div class="text-end">
+                      <button onClick={this.searches} id="searchBTN" type="button" class="btn btn-primary me-2">Buscar</button>
+                    </div>
                   </div>
-                  <button onClick={this.downloadReport} id="downBTN" type="button" class="btn btn-light text-dark me-2">Descargar CSV</button>
+                  <div class="col-2">
+                    <button onClick={this.downloadReport} id="downBTN" type="button" class="btn btn-primary me-2">Descargar CSV</button>
+                  </div>
                   <CSVLink
                     headers={headers}
                     filename="Usuarios.csv"
@@ -205,9 +207,15 @@ class Search extends React.Component {
                   />
                 </div>
                 <div id="alertSer" style={{ display: "none" }} class="alert alert-danger alert-dismissible">
-                                        <strong>Error!</strong> La búsqueda debe contener al menos un elemento.
-                                        <button onClick={this.closeAlSer} type="button" class="btn-close" aria-label="Close"></button>
-                                </div>
+                  <strong>Error!</strong> La búsqueda debe contener al menos un elemento.
+                  <button onClick={this.closeAlSer} type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+
+                <div class="col-12">
+                  <div class="d-flex justify-content-center">
+                    <div class="loader" id="loader" style={{ display: "none" }}></div>
+                  </div>
+                </div>
                 <div id="tittleSearch">
                   <br></br><br></br>
                   <h4>La búsqueda: {searchName} contiene <span id="nSer">{lengSearch}</span> resultados</h4>
