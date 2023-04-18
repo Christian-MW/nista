@@ -3,6 +3,7 @@ import axios from "axios";
 import { ConceptService } from '../../services/ConceptService';
 import { HashtagService } from '../../services/HashtagService';
 import Hashtag from './Hashtag';
+import Concept from '../Concept/Concept';
 
 require('dotenv').config();
 class HashtagSelect extends React.Component {
@@ -12,7 +13,8 @@ class HashtagSelect extends React.Component {
         super();
         this.state = {
             objHashtags: [],
-            objConcepts: []
+            objConcepts: [],
+            objHashtagSelect: []
         };
         this.hashtagService = new HashtagService();
         this.conceptService = new ConceptService();
@@ -24,6 +26,7 @@ class HashtagSelect extends React.Component {
             console.log(data)
             this.setState({ objHashtags: data });
             if (data.length > 0) {
+                this.setState({ objHashtagSelect: data.at(0) });
                 this.hashtag.printConcepts(data.at(0).id, data.at(0));
             }
         });
@@ -71,16 +74,22 @@ class HashtagSelect extends React.Component {
         })*/
 
         //alert(JSON.stringify(element))
+        return(<>
+        <Concept>{this.state.objHashtagSelect}</Concept>
+        </>)
     }
 
     render() {
         return (
+            <>
             <select onChange={e => this.printConcepts(e.target.value)} name="hashtags" id="selectHash" class="form-select form-select-lg mb-1">
                 {this.state.objHashtags.map(element => (
                     <option key={element.id} value={element.id}>{element.hashtag}</option>
                 )
                 )}
             </select>
+            {/*<Concept>{this.state.objHashtagSelect}</Concept>*/}
+            </>
         )
     }
 }

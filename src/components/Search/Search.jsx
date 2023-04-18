@@ -15,7 +15,8 @@ const headers = [
   { label: "Cuenta", key: "cuenta" },
   { label: "Seguidores", key: "seguidores" },
   { label: "Red Social", key: "red_social" },
-  { label: "Link", key: "link" }
+  { label: "Link", key: "link" },
+  { label: "Filtro", key: "filtro" }
 ];
 var itemsALL = [];
 var itemsSearch = [];
@@ -114,7 +115,7 @@ class Search extends React.Component {
       itemsSearch.forEach((item) => {
         searchName += item.label + ", ";
       })
-      document.getElementById("loader").style.display = "block";
+      document.getElementById("backdrop").style.display = "block";
       searchName = searchName.slice(0, -2);
       this.setState({ nameSearch: searchName });
       console.log();
@@ -130,16 +131,32 @@ class Search extends React.Component {
         })
           .then(function (response) {
             console.log("SERVICE POST /search/simple: " + JSON.stringify(response.data));
-            document.getElementById("loader").style.display = "none";
+            document.getElementById("backdrop").style.display = "none";
             if (response.data.result.length > 0) {
               ArrayUsers = [];
+              var userJSON = [];
               response.data.result.forEach((userDB) => {
-                var userJSON = {
+                userJSON = {
                   cuenta: userDB.screanName,
                   seguidores: userDB.followers,
-                  red_social: userDB.socialNetwork,
-                  link: userDB.link
+                  red_social: "Twitter",//userDB.link,
+                  link: userDB.link,
+                  filtro:""
                 }
+                if (userDB.filters.length > 0) {
+                  userDB.filters.forEach((filter) => {
+                    if (filter.value == "N") 
+                      filter.value = "Nuevo"
+                    else if(filter.value == "X")
+                      filter.value = "Contestó"
+                    else
+                      filter.value = "Sin responder"
+                    console.log(filter.key)
+                    userJSON.filtro += "Tema: " + filter.key + ", Estatus: " + filter.value +", ";
+                    //userJSON.estatus= filter.value;
+                  });
+                }
+                userJSON.filtro = userJSON.filtro.slice(0, -2);
                 ArrayUsers.push(userJSON);
               });
               lengSearch = response.data.result.length;
@@ -154,7 +171,7 @@ class Search extends React.Component {
             }
           })
           .catch(function (error) {
-            document.getElementById("loader").style.display = "none";
+            document.getElementById("backdrop").style.display = "none";
             console.log("ERROR AL BUSCAR USUARIOS");
             console.log(JSON.stringify(error));
           });
@@ -211,9 +228,9 @@ class Search extends React.Component {
                   <button onClick={this.closeAlSer} type="button" class="btn-close" aria-label="Close"></button>
                 </div>
 
-                <div class="col-12">
+                <div id="backdrop" class="col-12" style={{ display: "none" }}>
                   <div class="d-flex justify-content-center">
-                    <div class="loader" id="loader" style={{ display: "none" }}></div>
+                    <div class="loader" id="loader" ></div>
                   </div>
                 </div>
                 <div id="tittleSearch">

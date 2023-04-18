@@ -10,6 +10,7 @@ import ModalHashtag from '../Modals/ModalHashtag';
 import { ConceptService } from '../../services/ConceptService';
 import { HashtagService } from '../../services/HashtagService';
 import HashtagSelect from './HashtagSelect';
+import Concept from '../Concept/Concept';
 
 class Hashtag extends React.Component {
 
