@@ -18,6 +18,8 @@ var date_Start = "";
 var date_End = "";
 var statusMod = true;
 var campo = "";
+var currentDate = "";
+var endCurrentDate = "";
 require('dotenv').config();
 class Users extends React.Component {
     baseURLGOOGLE = process.env.REACT_APP_BASE_GOOGLE_URL;
@@ -48,6 +50,20 @@ class Users extends React.Component {
     //consumir servicio para traer Hashtags
     componentDidMount() {
         concServ++;
+
+        var d = new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+            currentDate = [year, month, day].join('-');
+            endCurrentDate = currentDate;
+
         if (concServ == 2) {
             this.conceptService.getConcepts().then(data => {
                 //console.log(data);
@@ -77,6 +93,7 @@ class Users extends React.Component {
         }*/
     }
     FdateStart(e) {
+        endCurrentDate = e;
         var ds = e.split("-");
         date_Start = ds[2] + "/" + ds[1] + "/" + ds[0];
         //console.log();
@@ -91,105 +108,105 @@ class Users extends React.Component {
         var arrayConcepts = [];
         this.setState({ nameCampaign: document.getElementById('nameCampaign').value });
 
-if (document.getElementById('nameCampaign').value != "") {
-    if (document.getElementById('nameHashtag').value != "") {
-        if (document.getElementById('linkCampaign').value != "") {
-            if (date_End != "" && date_Start != "") {
-                if (itemsSearch.length > 0) {
-                    var linkArr = document.getElementById('linkCampaign').value.split("/");
-        
-                    itemsSearch.forEach((itemCon) => {
-                        arrayConcepts.push(itemCon.text);
-                    });
-                    //this.clearForm();
-                    var camp = document.getElementById('nameCampaign').value;
-                    var URL = linkArr[5];
-                    var rang = "Campañas";
-                    var ser = document.getElementById('nameHashtag').value;
-                    var upd = "false";
-                    console.log(this.baseURLSTREAM + 'hashtag/extension/add')
-                    console.log();
-        
-                    axios.post(this.baseURLSTREAM + 'hashtag/extension/add', {
-                        headers: {
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                        },
-                        email: this.emailAcc,
-                        hashtag: ser,
-                        topics: arrayConcepts
-                    })
-                        .then(function (response) {
-                            console.log(JSON.stringify(response));
-                            var urlGoogle = process.env.REACT_APP_BASE_GOOGLE_URL;
-                            console.log(urlGoogle + 'campaign/addcampaign')
+        if (document.getElementById('nameCampaign').value != "") {
+            if (document.getElementById('nameHashtag').value != "") {
+                if (document.getElementById('linkCampaign').value != "") {
+                    if (date_End != "" && date_Start != "") {
+                        if (itemsSearch.length > 0) {
+                            var linkArr = document.getElementById('linkCampaign').value.split("/");
+
+                            itemsSearch.forEach((itemCon) => {
+                                arrayConcepts.push(itemCon.text);
+                            });
+                            //this.clearForm();
+                            var camp = document.getElementById('nameCampaign').value;
+                            var URL = linkArr[5];
+                            var rang = "Campañas";
+                            var ser = document.getElementById('nameHashtag').value;
+                            var upd = "false";
+                            console.log(this.baseURLSTREAM + 'hashtag/extension/add')
                             console.log();
-                            setTimeout(() => {
-                                axios.post(urlGoogle + 'campaign/addcampaign', {
-                                    headers: {
-                                        'Access-Control-Allow-Origin': '*',
-                                        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                                    },
-                                    campaign: camp,
-                                    spreadsheet_id: URL,
-                                    range: rang,
-                                    search: ser,
-                                    date_start: date_Start,
-                                    date_end: date_End,
-                                    update: upd,
-                                    tags: arrayConcepts
+
+                            axios.post(this.baseURLSTREAM + 'hashtag/extension/add', {
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                                },
+                                email: this.emailAcc,
+                                hashtag: ser,
+                                topics: arrayConcepts
+                            })
+                                .then(function (response) {
+                                    console.log(JSON.stringify(response));
+                                    var urlGoogle = process.env.REACT_APP_BASE_GOOGLE_URL;
+                                    console.log(urlGoogle + 'campaign/addcampaign')
+                                    console.log();
+                                    setTimeout(() => {
+                                        axios.post(urlGoogle + 'campaign/addcampaign', {
+                                            headers: {
+                                                'Access-Control-Allow-Origin': '*',
+                                                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                                            },
+                                            campaign: camp,
+                                            spreadsheet_id: URL,
+                                            range: rang,
+                                            search: ser,
+                                            date_start: date_Start,
+                                            date_end: date_End,
+                                            update: upd,
+                                            tags: arrayConcepts
+                                        })
+                                            .then(function (response) {
+                                                console.log(JSON.stringify(response));
+                                                document.getElementById("backdrop").style.display = "none";
+                                                document.getElementById("backdrop2").style.display = "block";
+                                                //document.getElementById("modalAddC").style.display = "block";
+                                            })
+                                            .catch(function (error) {
+                                                //document.getElementById("loader").style.display = "none";
+                                                document.getElementById("backdrop").style.display = "none";
+                                                console.log("ERROR AL CREAR UNA CAMPAÑA");
+                                                console.log(JSON.stringify(error));
+                                            });
+                                    }, "1000");
+
                                 })
-                                    .then(function (response) {
-                                        console.log(JSON.stringify(response));
-                                        document.getElementById("backdrop").style.display = "none";
-                                        document.getElementById("backdrop2").style.display = "block";
-                                        //document.getElementById("modalAddC").style.display = "block";
-                                    })
-                                    .catch(function (error) {
-                                        //document.getElementById("loader").style.display = "none";
-                                        document.getElementById("backdrop").style.display = "none";
-                                        console.log("ERROR AL CREAR UNA CAMPAÑA");
-                                        console.log(JSON.stringify(error));
-                                    });
-                            }, "1000");
-        
-                        })
-                        .catch(function (error) {
-                            //document.getElementById("loader").style.display = "none";
+                                .catch(function (error) {
+                                    //document.getElementById("loader").style.display = "none";
+                                    document.getElementById("backdrop").style.display = "none";
+                                    campo = "Error al crear la campaña";
+                                    document.getElementById("backdrop2Err").style.display = "block";
+                                    console.log("ERROR AL CREAR UNA CAMPAÑA");
+                                    console.log(JSON.stringify(error));
+                                });
+                        }
+                        else {
                             document.getElementById("backdrop").style.display = "none";
-                            campo = "Error al crear la campaña";
-                            document.getElementById("backdrop2Err").style.display = "block";
-                            console.log("ERROR AL CREAR UNA CAMPAÑA");
-                            console.log(JSON.stringify(error));
-                        });
+                        }
+                    }
+                    else {
+                        campo = "Fecha inicio o Fecha fin";
+                        document.getElementById("backdrop2Err").style.display = "block";
+                        //FALTA LLENAR LAS FECHAS
+                    }
                 }
                 else {
-                    document.getElementById("backdrop").style.display = "none";
+                    campo = "Link del archivo de campaña";
+                    document.getElementById("backdrop2Err").style.display = "block";
+                    //FALTA EL LINK DE LA CAMPAÑA
                 }
             }
-            else{
-                campo = "Fecha inicio o Fecha fin";
+            else {
+                campo = "Hashtag";
                 document.getElementById("backdrop2Err").style.display = "block";
-                //FALTA LLENAR LAS FECHAS
-            } 
+                //ALERT FALTA EL HASHTAG DE LA CAMPAÑA
+            }
         }
-        else{
-            campo = "Link del archivo de campaña";
+        else {
+            campo = "Nombre de campaña";
             document.getElementById("backdrop2Err").style.display = "block";
-            //FALTA EL LINK DE LA CAMPAÑA
+            //ALERTA FALTA EL NOMBRE DE LA CAMPAÑA
         }
-    }
-    else{
-        campo ="Hashtag";
-        document.getElementById("backdrop2Err").style.display = "block";
-        //ALERT FALTA EL HASHTAG DE LA CAMPAÑA
-    }
-}
-else{
-    campo="Nombre de campaña";
-    document.getElementById("backdrop2Err").style.display = "block";
-    //ALERTA FALTA EL NOMBRE DE LA CAMPAÑA
-}
     }
 
 
@@ -260,6 +277,7 @@ else{
                                                         <Form.Group controlId="dobStart">
                                                             <Form.Label>Fecha de inicio:</Form.Label>
                                                             <Form.Control type="date" name="dobStart"
+                                                                min={currentDate}
                                                                 onChange={(e) => this.FdateStart(e.target.value)}
                                                                 placeholder="Fecha de inicio" />
                                                         </Form.Group>
@@ -268,6 +286,7 @@ else{
                                                         <Form.Group controlId="dobEnd">
                                                             <Form.Label>Fecha fin:</Form.Label>
                                                             <Form.Control type="date" name="dobEnd"
+                                                            min={endCurrentDate}
                                                                 onChange={(e) => this.FdateEnd(e.target.value)}
                                                                 placeholder="Fecha fin" />
                                                         </Form.Group>

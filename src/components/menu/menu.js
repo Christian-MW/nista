@@ -26,6 +26,9 @@ class menu extends React.Component {
 					<li className="nav-item">
 			          	<a className="nav-link" href="/Users">Campañas</a>
 					</li>
+					<li className="nav-item">
+			          	<a className="nav-link" href="/Accounts">Cuentas</a>
+					</li>
 			    </ul>
 		    </div>
 		</nav>

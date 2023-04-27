@@ -8,6 +8,7 @@ import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
 import Hashtag from "./components/Hashtag/Hashtag";
 import Users from "./components/Users/Users";
+import Accounts from "./components/Accounts/Accounts";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.min.js';
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path:"/Users",
     element: <Users/>
+  },
+  {
+    path:"/Accounts",
+    element: <Accounts/>
   }
 ]);
 
