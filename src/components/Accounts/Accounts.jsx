@@ -90,7 +90,7 @@ class Accounts extends React.Component {
                                 <div id="backdrop2" style={{ display: "none" }}>
                                     <div class="d-flex justify-content-center">
                                         <div id="alertAdd" class="alert alert-success">
-                                            <strong>Correcto!</strong> El archivo se está procesando correctamente.
+                                            <strong>¡Correcto!</strong> El archivo se está procesando correctamente.
                                             <button onClick={this.closeModalSave} type="button" class="btn-close" aria-label="Close"></button>
                                         </div>
                                     </div>
@@ -98,7 +98,7 @@ class Accounts extends React.Component {
                                 <div id="backdrop2Err" style={{ display: "none" }}>
                                     <div class="d-flex justify-content-center">
                                         <div id="alertError" class="alert alert-danger">
-                                            <strong>Error!</strong> Falta completar el campo <b>{campo}</b>
+                                            <strong>¡Error!</strong> Falta completar el campo <b>link del archivo</b>.
                                             <button onClick={this.closeModalSave} type="button" class="btn-close" aria-label="Close"></button>
                                         </div>
                                     </div>

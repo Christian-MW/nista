@@ -318,7 +318,7 @@ class Users extends React.Component {
                                 <div id="backdrop2" style={{ display: "none" }}>
                                     <div class="d-flex justify-content-center">
                                         <div id="alertAdd" class="alert alert-success">
-                                            <strong>Correcto!</strong> La campaña <b>{this.state.nameCampaign}</b>, se ha creado con correctamente.
+                                            <strong>¡Correcto!</strong> La campaña <b>{this.state.nameCampaign}</b>, se ha creado correctamente.
                                             <button onClick={this.closeModalSave} type="button" class="btn-close" aria-label="Close"></button>
                                         </div>
                                     </div>
@@ -327,7 +327,7 @@ class Users extends React.Component {
                                 <div id="backdrop2Err" style={{ display: "none" }}>
                                     <div class="d-flex justify-content-center">
                                         <div id="alertError" class="alert alert-danger">
-                                            <strong>Error!</strong> Falta completar el campo <b>{campo}</b>
+                                            <strong>¡Error!</strong> Falta completar el campo <b>{campo}</b>.
                                             <button onClick={this.closeModalSave} type="button" class="btn-close" aria-label="Close"></button>
                                         </div>
                                     </div>
